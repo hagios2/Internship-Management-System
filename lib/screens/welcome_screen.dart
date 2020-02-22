@@ -24,11 +24,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Row(
               children: <Widget>[
                 Container(
-                  child: Image.asset('images/logo.png'),
+                  child: Image.asset('images/logo.jpg'),
                   height: 60.0,
                 ),
                 Text(
-                  'Flash Chat',
+                  'UENR Internship',
                   style: TextStyle(
                     fontSize: 45.0,
                     fontWeight: FontWeight.w900,
