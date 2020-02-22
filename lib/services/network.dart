@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class NetworkHelper {
-  NetworkHelper({this.url});
+  NetworkHelper({this.url, this.postData});
 
   final String url;
+  final postData;
 
   Future<dynamic> getData() async {
     http.Response response = await http.get(url);
@@ -13,6 +14,16 @@ class NetworkHelper {
       String data = response.body;
 
       return jsonDecode(data);
+    } else {
+      print(response.statusCode);
+    }
+  }
+
+  void postUserData() async {
+    http.Response response = await http.post(url, body: this.postData);
+
+    if (response.statusCode == 200) {
+      String data = response.body;
     } else {
       print(response.statusCode);
     }
