@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: kTextFieldDecoration.copyWith(
                   labelText: 'Enter your password.',
                 ),
-                validator: Validator(field: 'Email').makeValidator,
+                validator: Validator(field: 'Password').makeValidator,
               ),
               SizedBox(
                 height: 24.0,
@@ -78,6 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             "FzMJLeA0KouA0FcVSQXwTKVcS2p9PnAaQXgsRxBl",
                       },
                     );
+
+                    networkhelper.postUserData();
+
                     Navigator.pushNamed(context, LoginScreen.id);
                     setState(() {
                       _validate = true;

@@ -5,6 +5,7 @@ import 'package:internship_management_system/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:internship_management_system/screens/login_screen.dart';
 import 'package:internship_management_system/services/network.dart';
+import 'dart:io' show Platform;
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -14,52 +15,96 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  dynamic studentprograms;
-  dynamic studentLevels;
-  List<DropdownMenuItem> prog = [];
-  List<DropdownMenuItem> proglevels = [];
+  dynamic studentprograms = [];
+  dynamic studentLevels = [];
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
 
+    getRegistrationData();
+  }
+
+  Future getRegistrationData() async {
     studentprograms = await getPrograms();
 
     studentLevels = await getLevels();
   }
 
-  List<DropdownMenuItem> levelsDropdown() {
-    studentprograms.forEach(
-      (id, programs) {
-        proglevels.add(
-          DropdownMenuItem(
-            value: id,
-            child: Text('${programs}'),
-          ),
-        );
-        return proglevels;
+  DropdownButton<String> levelsDropdown() {
+    List<DropdownMenuItem<String>> dropdownItem = [];
+
+    var temp;
+    studentLevels.forEach((id, level) {
+      temp = DropdownMenuItem(
+        value: id,
+        child: Text('${level}'),
+      );
+
+      dropdownItem.add(temp);
+    });
+
+    return DropdownButton(
+      value: level,
+      items: dropdownItem,
+      onChanged: (value) {
+        setState(() {
+          level = value;
+        });
       },
     );
   }
 
-  List<DropdownMenuItem> programsDropdown() {
-    studentprograms.forEach(
-      (id, programs) {
-        prog.add(
-          DropdownMenuItem(
-            value: id,
-            child: Text('${programs}'),
-          ),
-        );
-//
-//        CupertinoPicker(
-//          backgroundColor: Colors.lightBlue,
-//          itemExtent: 32,
-//          onSelectedItemChanged: (selectedIndex) {},
-//        );
+  DropdownButton<String> programsDropdown() {
+    List<DropdownMenuItem<String>> dropdownItem = [];
 
-        return prog;
+    var tempItem;
+
+    studentprograms.forEach((id, program) {
+      tempItem = DropdownMenuItem(
+        value: id,
+        child: Text('${program}'),
+      );
+      dropdownItem.add(tempItem);
+    });
+
+    return DropdownButton<String>(
+      value: program,
+      style: TextStyle(),
+      items: dropdownItem,
+      onChanged: (value) {
+        setState(() {
+          program = value;
+        });
       },
+    );
+  }
+
+  CupertinoPicker getProgramspicker() {
+    List<Text> programspickerItems = [];
+
+    studentprograms.forEach((id, program) {
+      programspickerItems.add(Text(program));
+    });
+
+    return CupertinoPicker(
+      backgroundColor: Colors.lightBlue,
+      itemExtent: 32,
+      onSelectedItemChanged: (selectedIndex) {},
+    );
+  }
+
+  CupertinoPicker getLevelspicker() {
+    List<Text> levelspickerItems = [];
+
+    studentprograms.forEach((id, level) {
+      levelspickerItems.add(Text(level));
+    });
+
+    return CupertinoPicker(
+      backgroundColor: Colors.lightBlue,
+      itemExtent: 32,
+      onSelectedItemChanged: (selectedIndex) {},
     );
   }
 
@@ -144,28 +189,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               //select tag for
               Container(
-                child: DropdownButton(
-                  items: prog,
-                  onChanged: (value) {
-                    setState(() {
-                      program = value;
-                    });
-                  },
-                ),
+                child: (Platform.isAndroid)
+                    ? getProgramspicker()
+                    : programsDropdown(),
               ),
               SizedBox(
                 height: 8.0,
               ),
 
               Container(
-                child: DropdownButton(
-                  items: proglevels,
-                  onChanged: (value) {
-                    setState(() {
-                      level = value;
-                    });
-                  },
-                ),
+                child: (Platform.isIOS) ? getLevelspicker() : levelsDropdown(),
               ),
               SizedBox(
                 height: 8.0,
