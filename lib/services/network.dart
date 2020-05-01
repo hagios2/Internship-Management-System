@@ -2,48 +2,118 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class NetworkHelper {
-  NetworkHelper({this.url, this.postData});
+  NetworkHelper({this.url, this.postData, this.headers});
 
   final String url;
   final postData;
+  final headers;
 
-  Future<dynamic> getData() async {
+  dynamic getData() async {
     http.Response response = await http.get(url);
 
     if (response.statusCode == 200) {
-      String data = response.body;
-
-      return jsonDecode(data);
+      var data = json.decode(response.body);
+      print(data);
+      return data;
     } else {
       print(response.statusCode);
     }
   }
 
-  void postUserData() async {
+  Future postUserData() async {
     http.Response response = await http.post(url, body: this.postData);
 
     if (response.statusCode == 200) {
       String data = response.body;
+//      print(data);
+      return json.decode(data);
     } else {
       print(response.statusCode);
     }
   }
 }
 
-Future getPrograms() async {
-  NetworkHelper networkHelper = NetworkHelper(
-      url: 'http://internship-management-system.herokuapp.com/api/programs');
+class Program {
+  final int programId;
 
-  var programs = await networkHelper.getData();
+  final String program;
 
-  return programs;
+  Program({this.programId, this.program});
+
+  factory Program.fromJson(Map<String, dynamic> json) {
+    return Program(
+      programId: json['id'],
+      program: json['program'],
+    );
+  }
 }
 
-Future getLevels() async {
-  NetworkHelper networkHelper = await NetworkHelper(
-      url: 'http://internship-management-system.herokuapp.com/api/levels');
+class Level {
+  final int levelId;
+  final String level;
 
-  var levels = await networkHelper.getData();
+  Level({this.levelId, this.level});
 
-  return levels;
+  factory Level.fromJson(Map<String, dynamic> json) {
+    return Level(
+      levelId: json['id'],
+      level: json['level'],
+    );
+  }
+}
+
+List<Level> levelsFromJson(String str) =>
+    List<Level>.from(json.decode(str).map((x) => Level.fromJson(x)));
+//String levelsToJson(List<Level> data) =>
+//    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class LevelsList {
+  final List<Level> levels;
+  LevelsList({this.levels});
+
+  factory LevelsList.fromJson(List<dynamic> parsedJson) {
+    List<Level> levels = List<Level>();
+    levels = parsedJson.map((i) => Level.fromJson(i)).toList();
+
+    return LevelsList(
+      levels: levels,
+    );
+  }
+}
+
+Future<List<Level>> getLevels() async {
+  http.Response response = await http
+      .get('https://internship-management-system.herokuapp.com/api/levels');
+
+  if (response.statusCode == 200) {
+//    print(response.body);
+    final levels = levelsFromJson(response.body);
+    return levels;
+  } else {
+    throw Exception('Failed to load level');
+  }
+}
+
+Future<List<Program>> getPrograms() async {
+  http.Response response = await http
+      .get('https://internship-management-system.herokuapp.com/api/programs');
+
+  if (response.statusCode == 200) {
+    print(response.body);
+
+    List<Program> programList = [];
+
+    for (var programs in json.decode(response.body)) {
+      Program program =
+          Program(programId: programs["id"], program: programs["program"]);
+
+      programList.add(program);
+    }
+
+    print(programList);
+
+    return programList;
+  } else {
+    throw Exception('Failed to load program');
+  }
 }

@@ -15,3 +15,5 @@ const kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
 );
+
+const gMapsKey = 'AIzaSyBra5TrTLORMl1dsQVuK9_PAjwrEXMoNis';

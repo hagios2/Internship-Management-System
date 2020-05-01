@@ -5,6 +5,9 @@ import 'package:internship_management_system/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:internship_management_system/screens/login_screen.dart';
 import 'package:internship_management_system/services/network.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'dart:convert';
 import 'dart:io' show Platform;
 
 class RegistrationScreen extends StatefulWidget {
@@ -15,98 +18,102 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  dynamic studentprograms = [];
-  dynamic studentLevels = [];
+  Future<List<Program>> studentprograms;
+  Future<List<Level>> studentLevels;
 
   @override
   void initState() {
     super.initState();
 
-    getRegistrationData();
-  }
+//    studentprograms = getPrograms();
+//    print(studentprograms);
+    studentLevels = getLevels();
+    print(studentLevels);
+  } //
+//  DropdownButton<String> levelsDropdown() {
+//    FutureBuilder<LevelsList>(
+//        future: studentLevels,
+//        builder: (context, snapshot) {
+//          if (snapshot.hasData) {
+//            for (int i = 0; i < snapshot.data.levels.length; i++) {
+//              dropdownItem.add(
+//                DropdownMenuItem(
+//                  value: snapshot.data.levels[i].levelId.toString(),
+//                  child: Text('${snapshot.data.levels[i].level}'),
+//                ),
+//              );
+//            }
+//          } else {
+//            return Text("${snapshot.error}");
+//          }
+//          // By default, show a loading spinner.
+//          return CircularProgressIndicator();
+//        });
+//
+//    return DropdownButton(
+//      value: level,
+//      items: dropdownItem,
+//      onChanged: (value) {
+//        setState(() {
+//          level = value;
+//        });
+//      },
+//    );
+//  }
 
-  Future getRegistrationData() async {
-    studentprograms = await getPrograms();
+//  DropdownButton<String> programsDropdown() {
+//    List<DropdownMenuItem<String>> dropdownItem = [];
+//
+//    studentprograms.forEach((id, program) {
+//      dropdownItem.add(
+//        DropdownMenuItem(
+//          value: id,
+//          child: Text('${program}'),
+//        ),
+//      );
+//    });
+//
+//    return DropdownButton<String>(
+//      value: program,
+//      style: TextStyle(),
+//      items: dropdownItem,
+//      onChanged: (value) {
+//        setState(() {
+//          program = value;
+//        });
+//      },
+//    );
+//  }
 
-    studentLevels = await getLevels();
-  }
+//  CupertinoPicker getProgramspicker() {
+//    List<Text> programspickerItems = [];
+//
+//    studentprograms.forEach((id, program) {
+//      programspickerItems.add(Text(program));
+//    });
+//
+//    return CupertinoPicker(
+//      backgroundColor: Colors.lightBlue,
+//      itemExtent: 32,
+//      children: <Widget>[],
+//      onSelectedItemChanged: (selectedIndex) {},
+//    );
+//  }
 
-  DropdownButton<String> levelsDropdown() {
-    List<DropdownMenuItem<String>> dropdownItem = [];
+//  CupertinoPicker getLevelspicker() {
+//    List<Text> levelspickerItems = [];
+//
+//    studentlevels.forEach((id, level) {
+//      levelspickerItems.add(Text(level));
+//    });
 
-    var temp;
-    studentLevels.forEach((id, level) {
-      temp = DropdownMenuItem(
-        value: id,
-        child: Text('${level}'),
-      );
-
-      dropdownItem.add(temp);
-    });
-
-    return DropdownButton(
-      value: level,
-      items: dropdownItem,
-      onChanged: (value) {
-        setState(() {
-          level = value;
-        });
-      },
-    );
-  }
-
-  DropdownButton<String> programsDropdown() {
-    List<DropdownMenuItem<String>> dropdownItem = [];
-
-    var tempItem;
-
-    studentprograms.forEach((id, program) {
-      tempItem = DropdownMenuItem(
-        value: id,
-        child: Text('${program}'),
-      );
-      dropdownItem.add(tempItem);
-    });
-
-    return DropdownButton<String>(
-      value: program,
-      style: TextStyle(),
-      items: dropdownItem,
-      onChanged: (value) {
-        setState(() {
-          program = value;
-        });
-      },
-    );
-  }
-
-  CupertinoPicker getProgramspicker() {
-    List<Text> programspickerItems = [];
-
-    studentprograms.forEach((id, program) {
-      programspickerItems.add(Text(program));
-    });
-
-    return CupertinoPicker(
-      backgroundColor: Colors.lightBlue,
-      itemExtent: 32,
-      onSelectedItemChanged: (selectedIndex) {},
-    );
-  }
-
-  CupertinoPicker getLevelspicker() {
-    List<Text> levelspickerItems = [];
-
-    studentprograms.forEach((id, level) {
-      levelspickerItems.add(Text(level));
-    });
-
-    return CupertinoPicker(
-      backgroundColor: Colors.lightBlue,
-      itemExtent: 32,
-      onSelectedItemChanged: (selectedIndex) {},
-    );
-  }
+//    return CupertinoPicker(
+//      children: <Widget>[],
+//      backgroundColor: Colors.lightBlue,
+//      itemExtent: 32,
+//      onSelectedItemChanged: (selectedIndex) {},
+//    );
+//  }
 
   String name;
   String email;
@@ -123,19 +130,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Register'),
+      ),
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Form(
           key: _formKey,
           autovalidate: _validate,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: ListView(
             children: <Widget>[
-              Container(
-                height: 200.0,
-                child: Image.asset('images/logo.jpg'),
+              Hero(
+                tag: 'logo',
+                child: Container(
+                  height: 120.0,
+                  child: Image.asset('images/logo.jpg'),
+                ),
               ),
               SizedBox(
                 height: 48.0,
@@ -188,18 +199,68 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 validator: Validator(field: 'Phone').makeValidator,
               ),
               //select tag for
-              Container(
-                child: (Platform.isAndroid)
-                    ? getProgramspicker()
-                    : programsDropdown(),
-              ),
+//              Container(
+//                child:
+//                    (Platform.isIOS) ? getProgramspicker() : programsDropdown(),
+//              ),
               SizedBox(
                 height: 8.0,
               ),
 
+//              Container(
+//                child: levelsDropdown(),
+//              ),
+
               Container(
-                child: (Platform.isIOS) ? getLevelspicker() : levelsDropdown(),
+                child: FutureBuilder<List<Level>>(
+                  future: studentLevels,
+                  builder: (context, snapshot) {
+                    List<Widget> children;
+//                    List<DropdownMenuItem<String>> dropdownItem = [];
+                    if (snapshot.hasData) {
+                      print(snapshot
+                          .data); //                      print(dropdownItem);
+//                      return DropdownButton<String>(
+//                        value: "level",
+//                        items: snapshot.data
+//                            .map((levels) => DropdownMenuItem(
+//                                  child: Text(levels.level),
+//                                  value: levels.levelId.toString(),
+//                                ))
+//                            .toList(),
+//                        onChanged: (value) {
+//                          setState(() {
+//                            level = value;
+//                          });
+//                        },
+//                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    } else {
+                      children = <Widget>[
+                        SizedBox(
+                          child: CircularProgressIndicator(),
+                          width: 40.0,
+                          height: 40.0,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 16),
+                          child: Text('Awaiting level list...'),
+                        )
+                      ];
+                    }
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: children,
+                      ),
+                    );
+//                    return CircularProgressIndicator();
+                  },
+                ),
               ),
+
               SizedBox(
                 height: 8.0,
               ),
@@ -231,23 +292,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               RoundedButton(
                 buttonText: 'Register',
                 onPressed: () async {
+                  final Map<String, dynamic> data = {
+                    "name": '$name',
+                    "email": '$email',
+                    "phone": '$phone',
+                    "password": '$password',
+                    "program_id": "1",
+                    "level_id": "1",
+                    "index_no": '$index_no'
+                  };
+
                   if (_formKey.currentState.validate()) {
                     //Go to registration screen.
                     NetworkHelper networkhelper = NetworkHelper(
                       url:
                           'http://internship-management-system.herokuapp.com/api/register',
-                      postData: {
-                        "name": name,
-                        "email": email,
-                        "phone": phone,
-                        "password": password,
-                        "program_id": program,
-                        "level_id": level,
-                        "index_no": index_no
-                      },
+                      postData: json.encode(data),
                     );
 
-                    networkhelper.postUserData();
+                    await networkhelper.postUserData();
 
                     Navigator.pushNamed(context, LoginScreen.id);
                   } else {
