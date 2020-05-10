@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internship_management_system/constants.dart';
 import 'package:internship_management_system/components/validator.dart';
@@ -8,20 +9,20 @@ import 'package:internship_management_system/services/network.dart';
 import 'package:internship_management_system/screens/login_screen.dart';
 import 'package:search_map_place/search_map_place.dart';
 import 'dart:convert';
-
 import '../navigtion_bloc.dart';
 
-class ApplicationPage extends StatefulWidget with NavigationStates {
+class ProposedApplicationPage extends StatefulWidget with NavigationStates {
   final Function onMenuTap;
   final Color textColor;
 
-  ApplicationPage({this.onMenuTap, this.textColor});
+  ProposedApplicationPage({this.onMenuTap, this.textColor});
 
   @override
-  _ApplicationPageState createState() => _ApplicationPageState();
+  _ProposedApplicationPageState createState() =>
+      _ProposedApplicationPageState();
 }
 
-class _ApplicationPageState extends State<ApplicationPage> {
+class _ProposedApplicationPageState extends State<ProposedApplicationPage> {
   @override
   void initState() {
     super.initState();
@@ -62,12 +63,38 @@ class _ApplicationPageState extends State<ApplicationPage> {
                   child: Icon(Icons.menu, color: textColor),
                   onTap: onMenuTap,
                 ),
-                Text("Application",
-                    style: TextStyle(fontSize: 24, color: textColor)),
+                Text("Internship Application",
+                    style: TextStyle(fontSize: 15, color: textColor)),
                 Icon(Icons.settings, color: textColor),
               ],
             ),
-            FlatButton(onPressed: null, child: Icon(Icons.arrow_forward_ios)),
+            Container(
+              margin: const EdgeInsets.only(
+                left: 150.0,
+                top: 50.0,
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  BlocProvider.of<NavigationBloc>(context)
+                      .add(menuNavigationEvents.ProposeApplicationEvent);
+                },
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      'Recommended Company',
+                      style: TextStyle(color: textColor),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 15.0,
+                    )
+                  ],
+                ),
+              ),
+            ),
             Form(
               key: _formKey,
               autovalidate: _validate,
@@ -85,7 +112,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
                           SearchMapPlaceWidget(
                             apiKey: gMapsKey,
                             language: "en",
-                            placeholder: 'Company Address',
+                            placeholder: 'Name of Company',
                             onSelected: (Place place) async {
                               final geolocation = await place.geolocation;
 
@@ -100,8 +127,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
                                   CameraUpdate.newLatLngBounds(
                                       geolocation.bounds, 0));
 
-                              _validate:
-                              Validator(field: 'Company Email').makeValidator;
+                              // _validate:
+                              // Validator(field: 'Company Name').makeValidator;
                             },
                           ),
                         ]),
@@ -118,7 +145,8 @@ class _ApplicationPageState extends State<ApplicationPage> {
                           decoration: InputDecoration(
                             labelText: 'Name of Company',
                           ),
-                          validator: Validator(field: 'Name').makeValidator,
+                          validator:
+                              Validator(field: 'Company Email').makeValidator,
                         ),
                       ),
                     ],
@@ -188,101 +216,6 @@ class _ApplicationPageState extends State<ApplicationPage> {
             ),
           ]),
     );
-
-    Widget defaultApplication() {
-      return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        physics: ClampingScrollPhysics(),
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              title: const Text('Metro Tv'),
-              leading: Radio(
-                value: '1',
-                groupValue: 'company',
-                onChanged: (value) {
-                  setState(() {
-                    company_name = value;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('Ghana Gas Ltd.'),
-              leading: Radio(
-                value: '2',
-                groupValue: 'company',
-                onChanged: (value) {
-                  setState(() {
-                    company_name = value;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('Ghana Tech Lab'),
-              leading: Radio(
-                value: '3',
-                groupValue: 'company',
-                onChanged: (value) {
-                  setState(() {
-                    company_name = value;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('Ghana Tech Lab'),
-              leading: Radio(
-                value: '4',
-                groupValue: 'company',
-                onChanged: (value) {
-                  setState(() {
-                    company_name = value;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('Ghana Tech Lab'),
-              leading: Radio(
-                value: '5',
-                groupValue: 'company',
-                onChanged: (value) {
-                  setState(() {
-                    company_name = value;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('Ghana Tech Lab'),
-              leading: Radio(
-                value: '6',
-                groupValue: 'company',
-                onChanged: (value) {
-                  setState(() {
-                    company_name = value;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: const Text('Ghana Tech Lab'),
-              leading: Radio(
-                value: '7',
-                groupValue: 'company',
-                onChanged: (value) {
-                  setState(() {
-                    company_name = value;
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-      );
-    }
   }
 
 /*_addMarker() {

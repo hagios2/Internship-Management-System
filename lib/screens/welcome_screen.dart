@@ -37,9 +37,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(''),
-      ),
       backgroundColor: animation.value,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -69,6 +66,32 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             SizedBox(
               height: 48.0,
+            ),
+            Container(
+              height: 200,
+              child: PageView(
+                controller: PageController(viewportFraction: 0.8),
+                scrollDirection: Axis.horizontal,
+                pageSnapping: true,
+                children: <Widget>[
+//                Container(child: ,),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    color: Colors.redAccent,
+                    width: 100,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    color: Colors.blueAccent,
+                    width: 100,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    color: Colors.greenAccent,
+                    width: 100,
+                  ),
+                ],
+              ),
             ),
             RoundedButton(
               buttonText: 'Login',

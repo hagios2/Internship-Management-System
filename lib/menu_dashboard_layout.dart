@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internship_management_system/components/menu.dart';
 import 'package:internship_management_system/components/dashboad.dart';
 import 'package:internship_management_system/components/navigation_bloc/application_page.dart';
+import 'package:internship_management_system/components/navigation_bloc/default_application.dart';
 import 'package:internship_management_system/components/navigation_bloc/main_dashboard.dart';
 import 'package:internship_management_system/components/navigtion_bloc.dart';
 
@@ -109,7 +110,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage>
       return 0;
     } else if (navigationStates is Notification) {
       return 1;
-    } else if (navigationStates is ApplicationPage) {
+    } else if (navigationStates is DefaultApplication) {
       return 2;
 //    } else if (navigationStates is Notification) {
 //      return 3;

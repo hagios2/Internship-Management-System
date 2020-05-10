@@ -1,10 +1,40 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internship_management_system/components/navigtion_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class MainDashboard extends StatelessWidget with NavigationStates {
+class MainDashboard extends StatefulWidget with NavigationStates {
   final Function onMenuTap;
   final Color textColor;
+
   MainDashboard({this.onMenuTap, this.textColor});
+  @override
+  _MainDashboardState createState() => _MainDashboardState();
+}
+
+class _MainDashboardState extends State<MainDashboard> {
+  Color textColor;
+  Function onMenuTap;
+  var User;
+
+  @override
+  void initState() {
+    super.initState();
+
+    textColor = widget.textColor;
+    onMenuTap = widget.onMenuTap;
+
+    getUser();
+  }
+
+  getUser() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+
+    setState(() {
+      User = json.decode(localStorage.getString('user'));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,71 +46,40 @@ class MainDashboard extends StatelessWidget with NavigationStates {
           Radius.circular(40),
         ),
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        physics: ClampingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                InkWell(
-                  child: Icon(Icons.menu, color: textColor),
-                  onTap: onMenuTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              InkWell(
+                child: Icon(Icons.menu, color: textColor),
+                onTap: onMenuTap,
+              ),
+              Text("Dashboard",
+                  style: TextStyle(fontSize: 15, color: textColor)),
+              Icon(Icons.settings, color: textColor),
+            ],
+          ),
+          SizedBox(height: 50),
+//          Container(child: Text("Welcome $User['name']")),
+          Container(
+            child: Column(
+              children: <Widget>[
+                Text('Internship Application'),
+                SizedBox(height: 20),
+                FlatButton(
+                  child: Icon(Icons.arrow_forward_ios),
+                  onPressed: () {
+                    BlocProvider.of<NavigationBloc>(context)
+                        .add(menuNavigationEvents.ApplicationclickedEvent);
+                  },
                 ),
-                Text("Dashboard",
-                    style: TextStyle(fontSize: 24, color: textColor)),
-                Icon(Icons.settings, color: textColor),
               ],
             ),
-            SizedBox(height: 50),
-            Container(
-              height: 200,
-              child: PageView(
-                controller: PageController(viewportFraction: 0.8),
-                scrollDirection: Axis.horizontal,
-                pageSnapping: true,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    color: Colors.redAccent,
-                    width: 100,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    color: Colors.blueAccent,
-                    width: 100,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    color: Colors.greenAccent,
-                    width: 100,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Transactions",
-              style: TextStyle(color: textColor, fontSize: 20),
-            ),
-            ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text("Macbook"),
-                    subtitle: Text("Apple"),
-                    trailing: Text("-2900"),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Divider(height: 16);
-                },
-                itemCount: 10)
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,21 +1,77 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:internship_management_system/components/navigtion_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Menu extends StatelessWidget {
-  // Animation<double> _scaleAnimation;
-  final Animation<double> menuScaleAnimation;
-  final Animation<Offset> slideAnimation;
-  final Color textColor;
-  final int selectedIndex;
-  final Function onMenuTapAction;
+class Menu extends StatefulWidget {
   Menu(
       {this.menuScaleAnimation,
       this.slideAnimation,
       this.textColor,
       this.selectedIndex,
       @required this.onMenuTapAction});
+
+  final Animation<double> menuScaleAnimation;
+  final Animation<Offset> slideAnimation;
+  final Color textColor;
+  final int selectedIndex;
+  final Function onMenuTapAction;
+
+  @override
+  _MenuState createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
+  // Animation<double> _scaleAnimation;
+  Animation<double> menuScaleAnimation;
+  Animation<Offset> slideAnimation;
+  Color textColor;
+  int selectedIndex;
+  Function onMenuTapAction;
+  String User;
+  SharedPreferences localStorage;
+
+  @override
+  void initState() {
+    menuScaleAnimation = widget.menuScaleAnimation;
+    slideAnimation = widget.slideAnimation;
+    textColor = widget.textColor;
+    selectedIndex = widget.selectedIndex;
+    onMenuTapAction = widget.onMenuTapAction;
+
+    super.initState();
+  }
+
+  getUser() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+
+    if (localStorage.containsKey('user')) {
+      setState(() {
+        User = json.decode(localStorage.getString('user'));
+      });
+      return Container(
+        child: Column(
+          children: <Widget>[
+            CircleAvatar(
+              radius: 15,
+              backgroundImage: AssetImage('images/noimage.jpg'),
+              child: Text(''),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return SizedBox(
+        height: 1.0,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +88,9 @@ class Menu extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+//                FutureBuilder(
+//                  future: ,
+//                )
                 GestureDetector(
                   onTap: () {
                     BlocProvider.of<NavigationBloc>(context)
@@ -56,7 +115,7 @@ class Menu extends StatelessWidget {
                   child: Text("Notification",
                       style: TextStyle(
                           color: textColor,
-                          fontSize: 22,
+                          fontSize: 20,
                           fontWeight: (selectedIndex == 1)
                               ? FontWeight.bold
                               : FontWeight.normal)),
@@ -71,7 +130,7 @@ class Menu extends StatelessWidget {
                   child: Text("Appplication",
                       style: TextStyle(
                           color: textColor,
-                          fontSize: 22,
+                          fontSize: 20,
                           fontWeight: (selectedIndex == 2)
                               ? FontWeight.bold
                               : FontWeight.normal)),
