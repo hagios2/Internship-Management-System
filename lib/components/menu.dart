@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:internship_management_system/components/navigtion_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class Menu extends StatefulWidget {
   Menu(
       {this.menuScaleAnimation,
@@ -97,13 +98,28 @@ class _MenuState extends State<Menu> {
                         .add(menuNavigationEvents.DashboardClickedEvent);
                     onMenuTapAction();
                   },
-                  child: Text("Dashboard",
-                      style: TextStyle(
-                          color: textColor,
-                          fontSize: 22,
-                          fontWeight: (selectedIndex == 0)
+                   child:  ListTile(
+                      leading: Icon(
+                        Icons.dashboard,
+                        color: Colors.blueGrey,
+                      ),
+                      title: Text(
+                        'Dashboard',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                              fontWeight: (selectedIndex == 0)
                               ? FontWeight.bold
-                              : FontWeight.normal)),
+                              : FontWeight.normal,
+                           /*  fontFamily: 'Source Sans Pro', */
+                            color: Colors.blueGrey),
+                      ),
+                    )
+                   
+                    //Text("Dashboard",
+                  //     style: TextStyle(
+                  //         color: textColor,
+                  //         fontSize: 22,
+                        //),
                 ),
                 SizedBox(height: 10),
                 GestureDetector(
@@ -169,16 +185,32 @@ class _MenuState extends State<Menu> {
                 GestureDetector(
                   onTap: () {
                     BlocProvider.of<NavigationBloc>(context)
-                        .add(menuNavigationEvents.ApplicationclickedEvent);
+                        .add(menuNavigationEvents.LogoutClickedEvent);
                     onMenuTapAction();
                   },
-                  child: Text("Logout",
-                      style: TextStyle(
-                          color: textColor,
-                          fontSize: 22,
-                          fontWeight: (selectedIndex == 0)
+                  child: ListTile(
+                      leading: Icon(
+                        Icons.dashboard,
+                        color: Colors.blueGrey,
+                      ),
+                      title: Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                              fontWeight: (selectedIndex == 0)
                               ? FontWeight.bold
-                              : FontWeight.normal)),
+                              : FontWeight.normal,
+                           /*  fontFamily: 'Source Sans Pro', */
+                            color: Colors.blueGrey),
+                      ),
+                    )
+                  //Text("Logout",
+                  //     style: TextStyle(
+                  //         color: textColor,
+                  //         fontSize: 22,
+                  //         fontWeight: (selectedIndex == 0)
+                  //             ? FontWeight.bold
+                  //             : FontWeight.normal)),
                 ),
               ],
             ),

@@ -23,8 +23,6 @@ class _DefaultApplicationState extends State<DefaultApplication> {
     super.initState();
     textColor = widget.textColor;
     onMenuTap = widget.onMenuTap;
-
-    getCompany();
   }
 
   Color textColor;
