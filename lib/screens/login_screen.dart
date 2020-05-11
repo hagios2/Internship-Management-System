@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:internship_management_system/components/rounded_button.dart';
 import 'package:internship_management_system/components/validator.dart';
-import 'package:internship_management_system/constants.dart';
 import 'package:internship_management_system/menu_dashboard_layout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
