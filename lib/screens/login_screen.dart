@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:internship_management_system/components/rounded_button.dart';
 import 'package:internship_management_system/components/validator.dart';
 import 'package:internship_management_system/menu_dashboard_layout.dart';
+import 'package:internship_management_system/screens/registration_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -66,28 +67,40 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 48.0,
               ),
-              TextFormField(
-                onChanged: (value) {
-                  email = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Enter your email',
-                ),
-                validator: Validator(field: 'Name').makeValidator,
-              ),
+              ListTile(
+                      leading: Icon(
+                        Icons.email,
+                        color: Colors.blueGrey,
+                      ),
+                      title:  TextFormField(
+                          onChanged: (value) {
+                            email = value;
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'Enter your email',
+                          ),
+                          validator: Validator(field: 'Email').makeValidator,
+                        ),
+                    ),
               SizedBox(
                 height: 8.0,
               ),
-              TextFormField(
-                obscureText: true,
-                onChanged: (value) {
-                  password = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Enter your password.',
-                ),
-                validator: Validator(field: 'Password').makeValidator,
-              ),
+                ListTile(
+                      leading: Icon(
+                        Icons.email,
+                        color: Colors.blueGrey,
+                      ),
+                      title:      TextFormField(
+                        obscureText: true,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Enter your password.',
+                        ),
+                        validator: Validator(field: 'Password').makeValidator,
+                      ),
+                    ),
               SizedBox(
                 height: 24.0,
               ),
@@ -168,6 +181,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
               
                   }),
+
+                  SizedBox(height: 10,),
+
+                  Text('Not having an account?'),
+
+                  GestureDetector(child: Text('Register', style: TextStyle(color: Colors.blue)),
+                   onTap:(){
+                     Navigator.popAndPushNamed(context, RegistrationScreen.id);
+                   } ,)
             ],
           ),
         ),

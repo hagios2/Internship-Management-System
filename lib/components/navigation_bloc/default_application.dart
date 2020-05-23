@@ -216,7 +216,7 @@ class _DefaultApplicationState extends State<DefaultApplication> {
                 height: 24.0,
               ),
               RoundedButton(
-                buttonText: 'Register',
+                buttonText: 'Apply',
                 onPressed: () async {
                   // final Map<String, dynamic> data = {
                   //   "name": '$name',

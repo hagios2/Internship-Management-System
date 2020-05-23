@@ -7,22 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//         debugShowCheckedModeBanner: false,
-//         initialRoute: WelcomeScreen.id,
-//         routes: {
-//           WelcomeScreen.id: (context) => WelcomeScreen(),
-//           LoginScreen.id: (context) => LoginScreen(),
-//           RegistrationScreen.id: (context) => RegistrationScreen(),
-//           MenuDashboardPage.id: (context) => MenuDashboardPage(),
-// //          ChatScreen.id: (context) => ChatScreen(),
-//         });
-//   }
-// }
-
 
 class MyApp extends StatefulWidget {
   @override
@@ -30,41 +14,32 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  
+    bool isSignedIn = false;
+    String token = '';
 
     @override
   void initState() {
     super.initState();
 
-    _getLocalStorage();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _getLocalStorage(context));
   }
 
-  void _getLocalStorage() async{
+  void _getLocalStorage(BuildContext context) async{
+
     SharedPreferences localStorage = await SharedPreferences.getInstance();
 
-    String token = localStorage.getString('token');
-
-    print(token);
-
-    if(localStorage.containsKey('token'))
-    {
       setState(() {
-           isSignedIn = true;
+         token = localStorage.getString('access_token');
       });
-    }else{
-      setState(() {
-           isSignedIn = false;
-      });
-    }
-
+ 
   }
-
-  bool isSignedIn = false;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: isSignedIn ? MenuDashboardPage.id : WelcomeScreen.id,
+        initialRoute: RegistrationScreen.id,//(token !=  null) ? MenuDashboardPage.id : WelcomeScreen.id,
         routes: {
           WelcomeScreen.id: (context) => WelcomeScreen(),
           LoginScreen.id: (context) => LoginScreen(),

@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'navigation_bloc/default_application.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 enum menuNavigationEvents {
   DashboardClickedEvent,
@@ -59,7 +60,7 @@ class NavigationBloc extends Bloc<menuNavigationEvents, NavigationStates> {
     }
   }
 
-  void loggout() async* {
+  loggout() async* {
 
       SharedPreferences localStorage = await SharedPreferences.getInstance();
 

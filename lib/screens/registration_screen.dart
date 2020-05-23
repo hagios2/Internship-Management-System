@@ -23,7 +23,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     super.initState();
   }
 
-
   Future<List<Program>> getPrograms() async {
     http.Response response = await http
         .get('https://internship-management-system.herokuapp.com/api/programs');
@@ -173,57 +172,87 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 height: 48.0,
               ),
-              TextFormField(
-                onChanged: (value) {
-                  name = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Enter your name',
+                   ListTile(
+                    leading: Icon(
+                      Icons.account_circle,
+                      color: Colors.blueGrey,
+                    ),
+                    title:    TextFormField(
+                      onChanged: (value) {
+                        name = value;
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Enter your name',
+                      ),
+                      validator: Validator(field: 'Name').makeValidator,
+                    ),
+                  ),
+            
+              SizedBox(
+                height: 8.0,
+              ),
+               ListTile(
+                      leading: Icon(
+                        Icons.email,
+                        color: Colors.blueGrey,
+                      ),
+                      title:  TextFormField(
+                          onChanged: (value) {
+                            email = value;
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'Enter your email',
+                          ),
+                          validator: Validator(field: 'Email').makeValidator,
+                        ),
+                    ),
+              SizedBox(
+                height: 8.0,
+              ),
+            ListTile(
+                leading: Icon(
+                  Icons.contact_mail,
+                  color: Colors.blueGrey,
                 ),
-                validator: Validator(field: 'Name').makeValidator,
+                title:    TextFormField(
+                    onChanged: (value) {
+                      indexNo = value;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Enter index number',
+                    ),
+                    validator: Validator(field: 'Index number').makeValidator,
+                    ),
+                  ),
+             
+              SizedBox(
+                height: 8.0,
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.phone,
+                  color: Colors.blueGrey,
+                ),
+                title:  TextFormField(
+                    onChanged: (value) {
+                      phone = value;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Enter phone',
+                    ),
+                    keyboardType: TextInputType.phone,
+                    validator: Validator(field: 'Phone').makeValidator,
+                ),
               ),
               SizedBox(
                 height: 8.0,
               ),
-              TextFormField(
-                onChanged: (value) {
-                  email = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Enter your email',
+               ListTile(
+                leading: Icon(
+                  Icons.school,
+                  color: Colors.blueGrey,
                 ),
-                keyboardType: TextInputType.emailAddress,
-                validator: Validator(field: 'Email').makeValidator,
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              TextFormField(
-                onChanged: (value) {
-                  indexNo = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Enter index number',
-                ),
-                validator: Validator(field: 'Index number').makeValidator,
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              TextFormField(
-                onChanged: (value) {
-                  phone = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Enter phone',
-                ),
-                keyboardType: TextInputType.phone,
-                validator: Validator(field: 'Phone').makeValidator,
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              Container(
+                title:   Container(
                 child: FutureBuilder(
                   future: getLevels(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -286,38 +315,43 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                 ),
               ),
+              ),
+            
               SizedBox(
                 height: 8.0,
               ),
-              Container(
-                child: FutureBuilder(
+              ListTile(
+              leading: Icon(
+                  Icons.book,
+                  color: Colors.blueGrey,
+              ),
+              title:  FutureBuilder(
                   future: getPrograms(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     List<Widget> children;
 
                     if (snapshot.hasData) {
-
                       children = <Widget>[
                         DropdownButtonFormField<String>(
-                           hint: Text('Select Program'), 
-                           value: program,
-                          validator: (program) => program == null ? 'Program is required' : null,
-                            onChanged: (selectedProgram) {
-                              setState(() {
-                                program = selectedProgram;
+                         hint: Text('Select Program'), 
+                         value: program,
+                        validator: (program) => program == null ? 'Program is required' : null,
+                          onChanged: (selectedProgram) {
+                            setState(() {
+                              program = selectedProgram;
 
-                              });
+                            });
 
-                               print(selectedProgram);
-                            },
-                            items: snapshot.data
-                                .map<DropdownMenuItem<String>>(
-                                    (menuItems) => DropdownMenuItem<String>(
-                                          child: Text("${menuItems.program}"),
-                                          value:
-                                              "${menuItems.programId.toString()}",
-                                        ))
-                                .toList())
+                             print(selectedProgram);
+                          },
+                          items: snapshot.data
+                              .map<DropdownMenuItem<String>>(
+                                  (menuItems) => DropdownMenuItem<String>(
+                                        child: Text("${menuItems.program}"),
+                                        value:
+                                            "${menuItems.programId.toString()}",
+                                      ))
+                              .toList())
                       ];
                     } else if (snapshot.hasError) {
                       children = <Widget>[
@@ -354,25 +388,40 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     );
                   },
-                ),
               ),
+              ),
+             
               SizedBox(
                 height: 8.0,
               ),
-              TextFormField(
-                obscureText: true,
-                onChanged: (value) {
-                  password = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Enter your password.',
-                ),
-                validator: Validator(field: 'Password').makeValidator,
-              ),
+
+                ListTile(
+                      leading: Icon(
+                        Icons.email,
+                        color: Colors.blueGrey,
+                      ),
+                      title:      TextFormField(
+                        obscureText: true,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Enter your password.',
+                        ),
+                        validator: Validator(field: 'Password').makeValidator,
+                      ),
+                    ),
+          
               SizedBox(
                 height: 8.0,
               ),
-              TextFormField(obscureText: true,
+
+              ListTile(
+                  leading: Icon(
+                    Icons.email,
+                    color: Colors.blueGrey,
+                  ),
+                  title:      TextFormField(obscureText: true,
                 onChanged: (value) {
                   confirmPassword = value;
                 },
@@ -392,6 +441,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   return null;
                               }
               ),
+                ),
+      
               SizedBox(
                 height: 24.0,
               ),

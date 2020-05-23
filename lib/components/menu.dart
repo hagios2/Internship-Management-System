@@ -197,7 +197,7 @@ class _MenuState extends State<Menu> {
                         'Logout',
                         style: TextStyle(
                             fontSize: 18.0,
-                              fontWeight: (selectedIndex == 0)
+                              fontWeight: (selectedIndex == 5)
                               ? FontWeight.bold
                               : FontWeight.normal,
                            /*  fontFamily: 'Source Sans Pro', */
