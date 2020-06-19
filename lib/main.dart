@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: RegistrationScreen.id,//(token !=  null) ? MenuDashboardPage.id : WelcomeScreen.id,
+        initialRoute: (token !=  null) ? MenuDashboardPage.id : WelcomeScreen.id,
         routes: {
           WelcomeScreen.id: (context) => WelcomeScreen(),
           LoginScreen.id: (context) => LoginScreen(),
