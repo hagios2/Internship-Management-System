@@ -319,23 +319,24 @@ class _ProposedApplicationPageState extends State<ProposedApplicationPage> {
                         if (_formKey.currentState.validate()) {
 
                           final data = {
-                          "company_name": '$company_name',
-                          "company_email": '$company_email',
-                          "company_location": "$company_location",
-                          "company_city": "$region_id",
+                          "preferred_company_name": '$company_name',
+                          "preferred_company_email": '$company_email',
+                          "preferred_company_location": "$company_location",
+                          "preferred_company_city": "$region_id",
                           "preferred_company_latitude": "$lat",
-                          "preferred_company_longitude": "$long"
+                          "preferred_company_longitude": "$long",
+                          "preferred_company": true
                         };
 
                          SharedPreferences localStorage = await SharedPreferences.getInstance();
 
                          String token = localStorage.getString('access_token');
                           //Go to registration screen.
-                         var headers2 = { 'Accept':'application/json',
-                                                             'Authorization': "Bearer $token",};
-                                                  http.Response response = await http.post(
-                                                       'http://internship-management-system.herokuapp.com/api/student-application',
-                                                   body: data, headers: headers2
+                         var headers = { 'Accept':'application/json','Authorization': "Bearer $token",};
+                         
+                         http.Response response = await http.post(
+                                'http://internship-management-system.herokuapp.com/api/student-application',
+                            body: data, headers: headers
                          );
 
                         if(response.statusCode == 200){
