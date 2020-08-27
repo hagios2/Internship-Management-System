@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         "scope": "*",
                         "client_id": "1",
                         "client_secret":
-                            "aVIWPjhpGgweKfK62OSocQH0HmEfaTspAt7mTt90"
+                            "RwqYH4jyzZrNjximIy9OVnrPemBAOw1UVoXdPhia"
                       };
                       http.Response response = await http.post(
                         url,
